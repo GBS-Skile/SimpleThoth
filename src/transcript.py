@@ -86,6 +86,12 @@ def transcript(file):
         else:
             raise ParseError(f'Command {command} does not exist.')
     
+    for state_node in scenario:
+        state_node.setdefault('context', {}) \
+            .setdefault('Dialog', {}) \
+            .setdefault('state', state_node['next_state'])
+        del state_node['next_state']
+    
     print(json.dumps(scenario, ensure_ascii=False, indent=2))
 
 

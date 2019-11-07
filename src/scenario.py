@@ -1,5 +1,20 @@
 from json import load
 
+
+def flatten_dictionary(d):
+    result = {}
+    for key, value in d.items():
+        if type(value) == dict:
+            result.update({
+                f'{key}_{inner_key}': inner_value
+                for inner_key, inner_value
+                in flatten_dictionary(value).items()
+            })
+        else:
+            result[key] = value
+    return result
+
+
 class ContextManager:
     def __init__(self, context: dict = {}):
         self._context = context
@@ -14,6 +29,10 @@ class ContextManager:
                 return fallback
         
         return result
+    
+    def format_message(self, message, **kwargs):
+        kwargs.update(flatten_dictionary(self._context))
+        return message.format(**kwargs)
 
 
 class Scenario:
@@ -35,11 +54,10 @@ class Scenario:
         state_node = self.state_nodes.get(state, self.fallback_state)
         
         return {
-            'msg': state_node.get('message'),
+            'msg': [
+                req_context.format_message(m, msg=message)
+                for m in state_node.get('message', [])
+            ],
             'platform': state_node.get('platform'),
-            'context': {
-                'Dialog': {
-                    'state': state_node.get('next_state'),
-                },
-            },
+            'context': state_node.get('context'),
         }

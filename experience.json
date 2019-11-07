@@ -10,7 +10,11 @@
         "김철수"
       ]
     },
-    "next_state": "1"
+    "context": {
+      "Dialog": {
+        "state": "1"
+      }
+    }
   },
   {
     "state": "1",
@@ -23,7 +27,11 @@
         "아니"
       ]
     },
-    "next_state": "2"
+    "context": {
+      "Dialog": {
+        "state": "2"
+      }
+    }
   },
   {
     "state": "2",
@@ -37,7 +45,11 @@
         "잘 못 지내"
       ]
     },
-    "next_state": "End"
+    "context": {
+      "Dialog": {
+        "state": "End"
+      }
+    }
   },
   {
     "state": "End",
@@ -45,7 +57,11 @@
       "현재는 여기까지 구현된 상태랍니다.",
       "다시 시작하려면 '초기화'라고 말해주세요."
     ],
-    "next_state": "End"
+    "context": {
+      "Dialog": {
+        "state": "End"
+      }
+    }
   },
   {
     "state": null,
@@ -53,6 +69,10 @@
       "음... 뭔가 이상하네요.",
       "처음부터 다시 대화를 시작해보죠."
     ],
-    "next_state": "Default"
+    "context": {
+      "Dialog": {
+        "state": "Default"
+      }
+    }
   }
 ]
