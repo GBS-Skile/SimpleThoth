@@ -36,6 +36,7 @@ class Scenario:
         
         return {
             'msg': state_node.get('message'),
+            'platform': state_node.get('platform'),
             'context': {
                 'Dialog': {
                     'state': state_node.get('next_state'),

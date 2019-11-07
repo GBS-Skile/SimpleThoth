@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from scenario import Scenario
+from ..scenario import Scenario
 
 app = Flask(__name__)
 app.config.from_pyfile('config.cfg')
