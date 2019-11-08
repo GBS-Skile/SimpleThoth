@@ -1,3 +1,4 @@
+import ast
 import json
 import sys
 
@@ -113,5 +114,12 @@ def cmd_add_next_state(tr, state_name):
 
 
 @transcripter.command('SET')
-def cmd_set_context(tr, path, value):
-    _set_attribute(tr.state, 'context_' + path, value, sep='_')
+def cmd_set_context(tr, path, *args):
+    value = ast.literal_eval(' '.join(args))
+    _set_attribute(tr.state, path, value, sep='_')
+
+
+@transcripter.command('APPEND')
+def cmd_set_context(tr, path, *args):
+    value = ast.literal_eval(' '.join(args))
+    _set_attribute(tr.state, path, value, sep='_', append=True)

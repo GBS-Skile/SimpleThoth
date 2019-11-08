@@ -1,9 +1,8 @@
-# 추가로 구현해야 할 것
-# 도움말 - 여기서 구현할 내용인가? 싶긴 하지만...
-# YES - NO 분기 / 답변 스킵
-# 답변한 질문에 대한 표시
-# 나무 성장
-# "지금까지 받았던 질문들 다시 받기"
+# TODO LIST
+# * 도움말 (질문 가이드) - 여기서 구현할 내용인가?
+# * 분기 구현: 답변 스킵, YN-Q 패턴
+# * 답변한 질문을 Dialog context에 등록
+# * 지금가지 받은 질문 다시 받기 기능
 
 
 STATE Default
@@ -13,12 +12,13 @@ STATE Default
 STATE
 > 경험 나무에서는 {msg}님의 일상에 대해 이야기할 거예요.
 > {msg}님이 평소에 하는 활동 중 하나를 꼽으면 무엇인가요?
-SET Dialog_name {msg}
+SET context_Dialog_name "{msg}"
 
 
 STATE
 > {Dialog_name}님은 {msg} 활동을 왜 하게 되셨나요?
-SET Dialog_activity {msg}
+SET context_Dialog_activity "{msg}"
+SET platform_tree_growthProgress 1
 
 
 STATE
@@ -34,8 +34,9 @@ STATE
 > 그렇군요.
 > 방금 전에 한 {Dialog_activity} 이야기를 되돌아보았을 때,
 > {Dialog_name}님이라는 사람은 무엇을 중요시 여기는 것 같아요?
+SET platform_tree_growthProgress 2
+APPEND platform_actions "tree_2"
 < 잘 모르겠어요
-# TODO 가치나무로의 분기 컨셉
 
 
 STATE
@@ -56,18 +57,21 @@ STATE
 > 지금까지의 얘기를 돌아보아요.
 > {Dialog_name}님에게 있어서 {Dialog_activity} 활동을
 > 한 마디로 표현하자면 어떻게 할 수 있을까요?
+SET platform_tree_growthProgress 3
 
 
 STATE
 > 그렇다면 그 "{msg}"에 대해서
 > 그림으로도 같이 표현해볼까요?
-# TODO 그림 그리기 기능
+SET platform_tree_growthProgress 4
+APPEND platform_actions "sketch"
 
 
 STATE
 > 멋진 그림이네요.
 > {Dialog_name}님과 {Dialog_activity} 활동에 대해서 얘기할 수 있어서 좋았어요.
 > 감사합니다.
+SET platform_tree_growthProgress 5
 
 STATE End
 GOTO End

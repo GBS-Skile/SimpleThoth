@@ -2,7 +2,7 @@
   {
     "state": "Default",
     "message": [
-      "이 대화에서 쓸 별명을 말해주실래요?"
+      "[두 번재 대화] 이 대화에서 쓸 별명을 말해주실래요?"
     ],
     "context": {
       "Dialog": {
@@ -32,11 +32,6 @@
       "Dialog": {
         "activity": "{msg}",
         "state": "3"
-      }
-    },
-    "platform": {
-      "tree": {
-        "growthProgress": 1
       }
     }
   },
@@ -71,12 +66,6 @@
       "{Dialog_name}님이라는 사람은 무엇을 중요시 여기는 것 같아요?"
     ],
     "platform": {
-      "tree": {
-        "growthProgress": 2
-      },
-      "actions": [
-        "tree_2"
-      ],
       "quick_replies": [
         "잘 모르겠어요"
       ]
@@ -129,11 +118,6 @@
       "{Dialog_name}님에게 있어서 {Dialog_activity} 활동을",
       "한 마디로 표현하자면 어떻게 할 수 있을까요?"
     ],
-    "platform": {
-      "tree": {
-        "growthProgress": 3
-      }
-    },
     "context": {
       "Dialog": {
         "state": "10"
@@ -146,14 +130,6 @@
       "그렇다면 그 \"{msg}\"에 대해서",
       "그림으로도 같이 표현해볼까요?"
     ],
-    "platform": {
-      "tree": {
-        "growthProgress": 4
-      },
-      "actions": [
-        "sketch"
-      ]
-    },
     "context": {
       "Dialog": {
         "state": "11"
@@ -167,11 +143,6 @@
       "{Dialog_name}님과 {Dialog_activity} 활동에 대해서 얘기할 수 있어서 좋았어요.",
       "감사합니다."
     ],
-    "platform": {
-      "tree": {
-        "growthProgress": 5
-      }
-    },
     "context": {
       "Dialog": {
         "state": "End"
