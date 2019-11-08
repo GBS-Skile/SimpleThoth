@@ -15,6 +15,16 @@ def flatten_dictionary(d):
     return result
 
 
+def map_all_value(obj, fn):
+    for key, value in obj.items():
+        if type(value) == dict:
+            map_all_value(value, fn)
+        else:
+            obj[key] = fn(value)
+    
+    return obj
+
+
 class ContextManager:
     def __init__(self, context: dict = {}):
         self._context = context
@@ -52,12 +62,14 @@ class Scenario:
         req_context = ContextManager(context)
         state = req_context.get('Dialog.state')
         state_node = self.state_nodes.get(state, self.fallback_state)
+
+        format_message = lambda m: req_context.format_message(m, msg=message)
         
         return {
             'msg': [
-                req_context.format_message(m, msg=message)
+                format_message(m)
                 for m in state_node.get('message', [])
             ],
             'platform': state_node.get('platform'),
-            'context': state_node.get('context'),
+            'context': map_all_value(state_node.get('context'), format_message),
         }

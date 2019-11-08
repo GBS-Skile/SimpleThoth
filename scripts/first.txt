@@ -1,0 +1,73 @@
+# 추가로 구현해야 할 것
+# 도움말 - 여기서 구현할 내용인가? 싶긴 하지만...
+# YES - NO 분기 / 답변 스킵
+# 답변한 질문에 대한 표시
+# 나무 성장
+# "지금까지 받았던 질문들 다시 받기"
+
+
+STATE Default
+> 이 대화에서 쓸 별명을 말해주실래요?
+
+
+STATE
+> 경험 나무에서는 {msg}님의 일상에 대해 이야기할 거예요.
+> {msg}님이 평소에 하는 활동 중 하나를 꼽으면 무엇인가요?
+SET Dialog_name {msg}
+
+
+STATE
+> {Dialog_name}님은 {msg} 활동을 왜 하게 되셨나요?
+SET Dialog_activity {msg}
+
+
+STATE
+> {Dialog_activity} 활동을 할 때, 무슨 느낌이나 생각이 드나요?
+
+
+STATE
+> {Dialog_activity} 활동과 관련해서
+> {Dialog_name}님이 인상 깊었던 이야기를 말해주세요.
+
+
+STATE
+> 그렇군요.
+> 방금 전에 한 {Dialog_activity} 이야기를 되돌아보았을 때,
+> {Dialog_name}님이라는 사람은 무엇을 중요시 여기는 것 같아요?
+< 잘 모르겠어요
+# TODO 가치나무로의 분기 컨셉
+
+
+STATE
+> {Dialog_activity}를 하면서
+> {Dialog_name}님에게 변화된 점에는 무엇이 있을까요?
+
+
+STATE
+> 그렇다면 이러한 변화에 대해 {Dialog_name}님은 어떻게 생각하시나요?
+
+
+STATE
+> 앞으로도 이전과 같은 방식으로 {Dialog_activity} 활동을 하고 싶나요?
+> 아니면 다른 변화를 꾀하고 싶나요?
+
+
+STATE
+> 지금까지의 얘기를 돌아보아요.
+> {Dialog_name}님에게 있어서 {Dialog_activity} 활동을
+> 한 마디로 표현하자면 어떻게 할 수 있을까요?
+
+
+STATE
+> 그렇다면 그 "{msg}"에 대해서
+> 그림으로도 같이 표현해볼까요?
+# TODO 그림 그리기 기능
+
+
+STATE
+> 멋진 그림이네요.
+> {Dialog_name}님과 {Dialog_activity} 활동에 대해서 얘기할 수 있어서 좋았어요.
+> 감사합니다.
+
+STATE End
+GOTO End

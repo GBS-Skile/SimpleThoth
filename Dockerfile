@@ -9,5 +9,4 @@ COPY ./src/ /app/
 WORKDIR /app
 
 ENV FLASK_APP app
-COPY scenario.json /app/
 CMD flask run -h 0.0.0.0
