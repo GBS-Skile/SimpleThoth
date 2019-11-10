@@ -5,9 +5,13 @@ from . import transcripter
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print('Usage: python transcript.py <FILE_PATH>')
+    if len(sys.argv) != 3:
+        print('Usage: python transcript.py <INPUT_FILE> <OUTPUT_FILE>')
     else:
-        with open(sys.argv[1], encoding='utf-8') as f:
-            scenario = transcripter.transcript(f)
-            print(json.dumps(scenario, ensure_ascii=False, indent=2))
+        scenario = None
+        with open(sys.argv[1], encoding='utf-8') as f_in:
+            scenario = transcripter.transcript(f_in)
+        
+        if scenario:
+            with open(sys.argv[2], 'w', encoding='utf-8') as f_out:
+                json.dump(scenario, f_out, ensure_ascii=False, indent=2)

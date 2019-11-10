@@ -61,6 +61,11 @@
       "Dialog": {
         "state": "5"
       }
+    },
+    "platform": {
+      "quick_replies": [
+        "잘 모르겠어요"
+      ]
     }
   },
   {
@@ -76,9 +81,6 @@
       },
       "actions": [
         "tree_2"
-      ],
-      "quick_replies": [
-        "잘 모르겠어요"
       ]
     },
     "context": {

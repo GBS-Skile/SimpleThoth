@@ -36,7 +36,7 @@ STATE
 > {Dialog_name}님이라는 사람은 무엇을 중요시 여기는 것 같아요?
 SET platform_tree_growthProgress 2
 APPEND platform_actions "tree_2"
-< 잘 모르겠어요
+: 잘 모르겠어요
 
 
 STATE

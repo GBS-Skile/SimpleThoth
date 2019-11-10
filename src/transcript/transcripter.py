@@ -6,7 +6,36 @@ from .states import StateManager
 from .errors import ParseError
 
 
-def _set_attribute(obj, path, value, *, sep='.', append=False):
+def _get_items(obj, *, sep='.'):
+    items = {}
+    for key, value in obj.items():
+        if type(value) is dict:
+            items.update({
+                f'{key}.{subkey}': subvalue for subkey, subvalue
+                in _get_items(value, sep=sep).items()
+            })
+        else:
+            items.update({key: value})
+    
+    return items
+
+
+def _get_attribute(obj, path, *, sep='.', fallback=None):
+    tokens = path.split(sep)
+    for token in tokens[:-1]:
+        try:
+            obj = obj[token]
+        except KeyError:
+            return fallback
+    
+    return obj.get(tokens[-1], fallback)
+
+
+def _set_attribute(obj, path, value, *,
+    sep='.', append=False, safe=False):
+    if append and safe:
+        raise ValueError("`append`, `safe` option cannot be together.")
+
     tokens = path.split(sep)
     for idx, token in enumerate(tokens):
         if idx != len(tokens) - 1:
@@ -14,8 +43,12 @@ def _set_attribute(obj, path, value, *, sep='.', append=False):
         else:
             if append:
                 obj.setdefault(token, []).append(value)
-            else:
+            elif not safe:
                 obj[token] = value
+            else:
+                obj.setdefault(token, value)
+    
+    return value
 
 
 class Transcripter:
@@ -63,10 +96,28 @@ class Transcripter:
             self.invoke_command(tokens[0], tokens[1:])
         
         for state_node in self.scenario:
-            _set_attribute(state_node, 'context.Dialog.state', state_node['next_state'])
-            del state_node['next_state']
+            before = state_node.get('before', None)
+            if before:
+                del state_node['before']
+                nodes = [node for node in self.scenario]
+                for node in self.scenario:
+                    nodes.extend([branch['then'] for branch in node.get('branch', [])])
+                
+                for node in nodes:
+                    if _get_attribute(node, 'context.Dialog.state') == state_node['state']:
+                        for key, value in _get_items(before).items():
+                            _set_attribute(node, key, value)
         
         return self.scenario
+    
+    @property
+    def current(self):
+        if self.branch is not None:
+            return self.branch
+        return self.state
+
+    def set_field(self, path, value, **kwargs):
+        return _set_attribute(self.current, path, value, **kwargs)
 
 
 transcripter = Transcripter()
@@ -78,7 +129,22 @@ def cmd_comment(tr, *args):
 
 @transcripter.command('<')
 def cmd_add_quick_replies(tr, *args):
-    _set_attribute(tr.state, 'platform.quick_replies', ' '.join(args), append=True)
+    title = ' '.join(args)
+
+    tr.branch = None
+    tr.set_field('before.platform.quick_replies', title, append=True)
+    tr.branch = tr.set_field('branch', {
+        'condition': { 'msg': { 'is': title } },
+        'then': {}
+    }, append=True)['then']
+
+
+@transcripter.command(':')
+def cmd_add_quick_replies(tr, *args):
+    title = ' '.join(args)
+
+    tr.branch = None
+    tr.set_field('before.platform.quick_replies', title, append=True)
 
 
 @transcripter.command('STATE', require_state=False)
@@ -88,29 +154,29 @@ def cmd_set_state(tr, name=None):
 
     old_state = tr.state
     tr.state = tr.state_manager.get_state(name)
+    tr.branch = None
     tr.scenario.append(tr.state)
 
-    if old_state and 'next_state' not in old_state:
-        old_state['next_state'] = name
+    if old_state:
+        _set_attribute(old_state, 'context.Dialog.state', name, safe=True)
 
 
 @transcripter.command('STATE?', require_state=False)
 def cmd_set_default_state(tr):
     tr.state = tr.state_manager.get_state(None)
+    tr.branch = None
     tr.scenario.append(tr.state)
 
 
 @transcripter.command('>')
 def cmd_add_message(tr, *args):
-    _set_attribute(tr.state, 'message', ' '.join(args), append=True)
+    tr.set_field('message', ' '.join(args), append=True)
 
 
 @transcripter.command('GOTO')
 def cmd_add_next_state(tr, state_name):
-    if 'next_state' in tr.state.keys():
-        raise ParseError('Wrong command: GOTO duplicated.')
-    
-    tr.state['next_state'] = state_name
+    # TODO State name verification
+    tr.set_field('context.Dialog.state', state_name)
 
 
 @transcripter.command('SET')

@@ -1,0 +1,168 @@
+[
+  {
+    "state": "Default",
+    "message": [
+      "안녕하세요! 전 터리예요.",
+      "사용자님의 이름은 무엇인가요?"
+    ],
+    "context": {
+      "Dialog": {
+        "state": "InputName"
+      }
+    },
+    "platform": {
+      "quick_replies": [
+        "김철수"
+      ]
+    }
+  },
+  {
+    "state": "InputName",
+    "message": [
+      "{msg}님 맞으신가요?"
+    ],
+    "context": {
+      "User": {
+        "#name": "{msg}"
+      },
+      "Dialog": {
+        "state": "NameCheck"
+      }
+    },
+    "platform": {
+      "quick_replies": [
+        "응",
+        "아니"
+      ]
+    }
+  },
+  {
+    "state": "NameCheck",
+    "message": [
+      "죄송하지만 말씀을 이해하지 못 했어요.",
+      "{User_#name}님 맞으신가요?"
+    ],
+    "context": {
+      "Dialog": {
+        "state": "NameCheck"
+      }
+    },
+    "branch": [
+      {
+        "condition": {
+          "msg": {
+            "is": "응"
+          }
+        },
+        "then": {
+          "message": [
+            "그렇군요.",
+            "반가워요, {User_#name}님!",
+            "요즘은 잘 지내세요?"
+          ],
+          "context": {
+            "Dialog": {
+              "state": "StatusCheck"
+            }
+          },
+          "platform": {
+            "quick_replies": [
+              "그럭저럭",
+              "잘 못 지내"
+            ]
+          }
+        }
+      },
+      {
+        "condition": {
+          "msg": {
+            "is": "아니"
+          }
+        },
+        "then": {
+          "message": [
+            "그렇군요...",
+            "다시 이름을 말씀해 주시겠어요?"
+          ],
+          "context": {
+            "Dialog": {
+              "state": "InputName"
+            }
+          },
+          "platform": {
+            "quick_replies": [
+              "김철수"
+            ]
+          }
+        }
+      }
+    ],
+    "platform": {
+      "quick_replies": [
+        "응",
+        "아니"
+      ]
+    }
+  },
+  {
+    "state": "StatusCheck",
+    "message": [
+      "아하 그러시군요."
+    ],
+    "context": {
+      "Dialog": {
+        "state": "End"
+      }
+    },
+    "platform": {
+      "quick_replies": [
+        "초기화"
+      ]
+    }
+  },
+  {
+    "state": "End",
+    "message": [
+      "현재는 여기까지 구현된 상태랍니다.",
+      "다시 시작하려면 '초기화'라고 말해주세요."
+    ],
+    "context": {
+      "Dialog": {
+        "state": "End"
+      }
+    },
+    "branch": [
+      {
+        "condition": {
+          "msg": {
+            "is": "초기화"
+          }
+        },
+        "then": {
+          "context": {
+            "Dialog": {
+              "state": "Default"
+            }
+          }
+        }
+      }
+    ],
+    "platform": {
+      "quick_replies": [
+        "초기화"
+      ]
+    }
+  },
+  {
+    "state": null,
+    "message": [
+      "음... 뭔가 이상하네요.",
+      "처음부터 다시 대화를 시작해보죠."
+    ],
+    "context": {
+      "Dialog": {
+        "state": "Default"
+      }
+    }
+  }
+]

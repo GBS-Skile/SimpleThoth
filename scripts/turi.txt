@@ -11,36 +11,47 @@ STATE Default
 > 안녕하세요! 전 터리예요.
 > 사용자님의 이름은 무엇인가요?
 
-# quick_replies 설정
-< 김철수
 
-STATE
+
+STATE InputName
 > {msg}님 맞으신가요?
-SET User_#name "{msg}"
+SET context_User_#name "{msg}"
+: 김철수
+
+
+
+STATE NameCheck
+> 죄송하지만 말씀을 이해하지 못 했어요.
+> {User_#name}님 맞으신가요?
+GOTO NameCheck
 < 응
+  > 그렇군요.
+  > 반가워요, {User_#name}님!
+  > 요즘은 잘 지내세요?
+  GOTO StatusCheck
 < 아니
+  > 그렇군요...
+  > 다시 이름을 말씀해 주시겠어요?
+  GOTO InputName
 
-STATE
-> 그렇군요.
-> 반가워요, {User_#name}님!
-> 요즘은 잘 지내세요?
-< 잘 못 지내
 
-# STATE
-# > 그렇군요...
-# > 다시 이름을 말씀해 주시겠어요?
-# < 김철수
 
-# STATE
-# > 죄송하지만 말씀을 이해하지 못 했어요.
-# > {User_#name}님 맞으신가요?
-# < 응
-# < 아니
+STATE StatusCheck
+> 아하 그러시군요.
+: 그럭저럭
+: 잘 못 지내
+
+
 
 STATE End
 > 현재는 여기까지 구현된 상태랍니다.
 > 다시 시작하려면 '초기화'라고 말해주세요.
 GOTO End
+< 초기화
+  > 기억을 잃는 중입니다...
+  GOTO Default
+
+
 
 STATE?
 > 음... 뭔가 이상하네요.

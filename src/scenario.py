@@ -16,13 +16,11 @@ def flatten_dictionary(d):
 
 
 def map_all_value(obj, fn):
-    for key, value in obj.items():
-        if type(value) == dict:
-            map_all_value(value, fn)
-        else:
-            obj[key] = fn(value)
-    
-    return obj
+    return {
+        key: map_all_value(value, fn)
+            if type(value) == dict else fn(value)
+        for key, value in obj.items()
+    }
 
 
 class ContextManager:
@@ -43,6 +41,17 @@ class ContextManager:
     def format_message(self, message, **kwargs):
         kwargs.update(flatten_dictionary(self._context))
         return message.format(**kwargs)
+    
+    def check(self, condition, **kwargs):
+        kwargs.update(flatten_dictionary(self._context))
+        for key, query in condition.items():
+            value = kwargs.get(key, None)
+            for operator, operand in query.items():
+                if operator == "is":
+                    if value != operand:
+                        return False
+        
+        return True
 
 
 class Scenario:
@@ -58,18 +67,22 @@ class Scenario:
     def action(self, context: dict, message: str):
         """
         """
-
         req_context = ContextManager(context)
         state = req_context.get('Dialog.state')
         state_node = self.state_nodes.get(state, self.fallback_state)
 
+        current_node = state_node
         format_message = lambda m: req_context.format_message(m, msg=message)
+
+        for branch in state_node.get('branch', []):
+            if req_context.check(branch.get('condition', {}), msg=message):
+                current_node = branch.get('then', {})
         
         return {
             'msg': [
                 format_message(m)
-                for m in state_node.get('message', [])
+                for m in current_node.get('message', [])
             ],
-            'platform': state_node.get('platform'),
-            'context': map_all_value(state_node.get('context'), format_message),
+            'platform': current_node.get('platform'),
+            'context': map_all_value(current_node.get('context', {}), format_message),
         }
