@@ -1,0 +1,237 @@
+STATE InputName
+> {msg}님이라고 부르면 괜찮을까요?
+SET context_User_name "{msg}"
+
+
+
+STATE NameCheck
+> {User_name}님이라고 부르면 괜찮을까요?
+GOTO NameCheck
+< 네
+  > 알겠습니다, {User_name}님!
+  > 이제 {User_name}님의 경험을 이야기해 볼게요.
+  > 어떤 활동에 대해 이야기를 하고 싶으신가요?
+  > 아래 주어진 활동 리스트를 참고하셔도 되고,
+  > 그냥 직접 자유롭게 입력해주셔도 좋아요.
+  GOTO InputActivity
+< 아니오
+  > 그렇다면 어떻게 불러드릴까요?
+  GOTO InputName
+
+
+
+STATE Default
+> {User_name}님의 활동에 대해서 하나 말해주세요.
+> 그것으로 이야기를 시작해 볼게요!
+> 아래 주어진 활동 리스트를 참고하셔도 되고,
+> 그냥 직접 자유롭게 입력해주셔도 좋아요.
+IF User_name exists False
+  > 안녕하세요.
+  > 본격적으로 대화를 나누기 전에,
+  > 사용자님을 뭐라고 부르면 좋을지 말씀해주세요!
+  GOTO InputName
+
+
+STATE InputActivity
+: 게임
+: 운동
+: 독서
+: 공부
+: 봉사
+: 음악감상
+> {msg} 활동에 대해 얘기해볼까요?
+SET context_Dialog_activity "{msg}"
+
+
+STATE
+< 네
+  > 좋아요. {User_name}님에게 {Dialog_activity} 활동은 어떤 의미를 갖나요?
+< 아니오
+  > 그렇다면 어떤 활동에 대해 얘기할까요?
+  GOTO InputActivity
+
+
+STATE
+SET platform_tree_growthProgress 1
+> {User_name}님이 {Dialog_activity} 활동을 시작한 계기가 있나요?
+
+
+STATE
+> {Dialog_activity} 활동은 언제 그리고 어디서 주로 하나요?
+
+
+STATE
+> {Dialog_activity} 활동을 할 때 {User_name}님의 표정은 어떤가요?
+
+
+STATE
+> {Dialog_activity} 활동을 하면 어떤 느낌이예요?
+
+
+STATE
+> {User_name}님이 {Dialog_activity} 활동을 할 때만 나타나는 특이한 모습이 있나요?
+
+
+STATE
+> {Dialog_activity} 활동과 관련된
+> {User_name}님의 인상깊은 경험을 하나 이야기해 주세요.
+> 그 당시의 상황이나 분위기, 자신의 표정 등
+> 가능한 상세히 떠올려 적어주시면 좋아요.
+
+
+STATE
+> 그렇군요.
+> 그렇다면 지금도 {Dialog_activity} 활동을 계속 하고 계신가요?
+> 하고 계신다면, 요즘의 {Dialog_activity} 활동은 어떤 느낌이 드시나요?
+
+
+STATE ValueTree
+> {Dialog_activity} 활동 이야기를 다시 읽어봤을 때,
+> {User_name}님은 무엇을 중요시 여기는 사람인 것 같나요?
+> {User_name}님의 가치관에 대해서 자세히 얘기하고 싶으면
+> "가치 나무 심기"에서 따로 자세히 이야기할 수도 있어요.
+APPEND platform_actions "tree_2"
+
+
+STATE
+: 다음 질문으로
+> 그렇다면 혹시 {User_name}님이
+> {Dialog_activity} 활동하는 걸 방해하는 건 있을까요?
+> {User_name}님의 삶을 방해하는 문제가 있다면
+> "문제 나무 심기"에서 따로 자세히 이야기할 수도 있어요.
+APPEND platform_actions "tree_1"
+
+
+STATE
+: 다음 질문으로
+SET platform_tree_growthProgress 2
+> {User_name}님이 해 주신 이야기, 정말 흥미로웠어요!
+> 이제는 {User_name}님의 {Dialog_activity} 활동이
+> {User_name}님 자신과 주변에
+> 어떤 영향을 미쳤는지 알아볼 거예요.
+> {Dialog_activity} 활동을 하게 되면서,
+> {User_name}님의 마음은 어떻게 변했나요?
+
+
+STATE
+> "{msg}"...
+> 왜 그렇게 변했다고 생각하세요?
+
+
+STATE
+> 그렇군요.
+> 그렇다면 {User_name}님의 주변은 어떻게 변했나요?
+> {Dialog_activity} 활동을 통해 새로운 인간관계를 맺어봤나요?
+> 아니면, 그 활동으로 주변인들과의 관계가 변한 적이 있나요?
+
+
+STATE
+> "{msg}"...
+> 왜 그렇게 변했다고 생각하세요?
+
+
+STATE
+SET platform_tree_growthProgress 3
+> {Dialog_activity} 활동을 좀 더 일찍 시작했다면
+> {User_name}님의 삶은 어떻게 변했을까요?
+> 왜 그렇게 변했을 거라고 생각하세요?
+
+
+STATE
+> {Dialog_activity} 활동 말고도
+> {User_name}님이 비슷한 목적에서 하는 다른 활동은 있나요?
+> 그 활동에 대해서 자세히 이야기하고 싶으면
+> 이 메뉴에서 바로 "경험 나무 심기"를 할 수도 있어요.
+APPEND platform_actions "tree_0"
+
+
+STATE
+: 다음 질문으로
+> 만약 {Dialog_activity} 활동을 하지 않았다면
+> {User_name}님의 삶은 어땠을까요?
+> 왜 그렇게 생각하시나요?
+
+
+STATE
+> {Dialog_activity} 활동을 하는 걸
+> {User_name}님 주변의 소중한 사람이 보거나 안다면
+> 그 분은 {Dialog_activity} 활동을 어떻게 느낄까요?
+> 왜 그렇게 생각하셨나요?
+< 나중에 대답할래
+  SET Dialog_
+  > 네, 알겠습니다.
+  > {Dialog_activity} 활동을 하는 걸
+  > {User_name}님 주변의 소중한 사람이 보거나 안다면
+  > 그 분은 {Dialog_activity} 활동을 어떻게 느낄까요?
+  > 왜 그렇게 생각하셨나요?
+
+
+STATE
+SET platform_tree_growthProgress 4
+> 앞서 {Dialog_activity} 활동이 주는 영향에 대해서
+> 다양한 이야기를 해 보았는데,
+> 이야기를 돌이켜봤을 때 어떤 감정이 느껴지나요?
+< 나중에 대답할래
+  SET Dialog_
+  > 네, 알겠습니다.
+  > 앞서 {Dialog_activity} 활동이 주는 영향에 대해서
+  > 다양한 이야기를 해 보았는데,
+  > 이야기를 돌이켜봤을 때 어떤 감정이 느껴지나요?
+
+
+STATE
+> {Dialog_activity} 활동이
+> {User_name}님에게 주었던 부정적인 영향은 없었나요?
+
+
+STATE
+> 지금처럼 {Dialog_activity} 활동을 했으면 좋겠나요?
+> 아니면 {Dialog_activity} 활동에 관해 바뀌어야할 점이 있나요?
+> 있다면, 왜 그런 부분이 나아졌으면 좋겠나요?
+> 그리고, 개선를 위해 시도해볼 만한 것들이 있을까요?
+
+
+STATE
+> 앞선 이야기들을 종합해 봤을 때,
+> {User_name}님의 노력을 방해하는 요소를 찾아보셨나요?
+> "문제 나무 심기"에서 따로 자세히 이야기해볼래요?
+APPEND platform_tree_growthProgress "tree_1"
+
+
+STATE
+: 다음 질문으로
+> 지금까지 긴 이야기를 해 보았죠.
+> {Dialog_activity} 이야기를 되돌아봤을 때,
+> {User_name}님은 어떠한 것을 중요시 여기는 사람이었을까요?
+> "가치 나무 심기"에서 따로 자세히 이야기해볼래요?
+APPEND platform_tree_growthProgress "tree_2"
+
+
+STATE
+> 지금까지의 얘기를 돌아보아요.
+> {Dialog_name}님에게 있어서 {Dialog_activity} 활동을
+> 한 마디로 표현하자면 어떻게 할 수 있을까요?
+
+
+STATE
+> 그렇다면 그 "{msg}"에 대해서
+> 그림으로도 같이 표현해볼까요?
+SET platform_tree_growthProgress 5
+
+
+STATE
+APPEND before_platform_actions "sketch"
+> 멋진 그림이네요.
+> {User_name}님과 {Dialog_activity} 활동에 대해
+> 얘기할 수 있어서 좋았어요.
+> 감사합니다.
+< 안 그릴래요
+  > 네, 그래도 괜찮아요.
+  > {User_name}님과 {Dialog_activity} 활동에 대해
+  > 얘기할 수 있어서 좋았어요.
+  > 감사합니다.
+
+
+STATE End
+> ...
+GOTO End

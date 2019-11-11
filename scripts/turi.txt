@@ -14,6 +14,9 @@ STATE Default
 
 
 STATE InputName
+# msg : 사용자 입력 그대로 갖다 붙이기
+# Dialog_어쩌구
+# User_어쩌구
 > {msg}님 맞으신가요?
 SET context_User_#name "{msg}"
 : 김철수

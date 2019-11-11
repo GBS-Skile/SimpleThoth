@@ -127,6 +127,15 @@ def cmd_comment(tr, *args):
     pass
 
 
+@transcripter.command('IF')
+def cmd_set_branch(tr, variable, operator, *args):
+    operand = ' '.join(args)
+    tr.branch = tr.set_field('branch', {
+        'condition': { variable: { operator: ast.literal_eval(operand) } },
+        'then': {}
+    }, append=True)['then']
+
+
 @transcripter.command('<')
 def cmd_add_quick_replies(tr, *args):
     title = ' '.join(args)
@@ -159,6 +168,8 @@ def cmd_set_state(tr, name=None):
 
     if old_state:
         _set_attribute(old_state, 'context.Dialog.state', name, safe=True)
+        for branch in old_state.get('branch', []):
+            _set_attribute(branch['then'], 'context.Dialog.state', name, safe=True)
 
 
 @transcripter.command('STATE?', require_state=False)

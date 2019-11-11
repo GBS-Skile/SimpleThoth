@@ -8,7 +8,23 @@
       "Dialog": {
         "state": "1"
       }
-    }
+    },
+    "branch": [
+      {
+        "condition": {
+          "msg": {
+            "is": "?"
+          }
+        },
+        "then": {
+          "context": {
+            "Dialog": {
+              "state": "1"
+            }
+          }
+        }
+      }
+    ]
   },
   {
     "state": "1",

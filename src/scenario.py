@@ -47,15 +47,18 @@ class ContextManager:
         for key, query in condition.items():
             value = kwargs.get(key, None)
             for operator, operand in query.items():
-                if operator == "is":
-                    if value != operand:
-                        return False
+                if operator == 'is':
+                    return value == operand
+                elif operator == 'exists':
+                    return bool(value) == operand
+                else:
+                    raise NotImplementedError(f'Unknown operator: `{operator}`')
         
         return True
 
 
 class Scenario:
-    def __init__(self, path, encoding="utf-8"):
+    def __init__(self, path, encoding='utf-8'):
         with open(path, encoding=encoding) as fp:
             self._data = load(fp)
             self.state_nodes = {
