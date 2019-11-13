@@ -1,0 +1,38 @@
+STATE Default
+: GOTO Default
+> STATE Default
+APPEND platform_actions "sketch"
+APPEND platform_actions "tree_0"
+APPEND platform_actions "tree_1"
+APPEND platform_actions "tree_2"
+APPEND platform_actions "tree_3"
+APPEND platform_actions "tree_4"
+
+
+STATE End
+> STATE End
+GOTO Default
+
+
+
+STATE
+> [질문 1]?
+> 자유롭게 서술하시고, 충분히 답변이 된 경우
+> "다음 질문으로" 버튼을 눌러주세요.
+
+STATE
+
+STATE 답변1
+GOTO 답변1
+< 다음 질문으로
+  > [질문 2]?
+  > 자유롭게 서술하시고, 충분히 답변이 된 경우
+  > "다음 질문으로" 버튼을 눌러주세요.
+
+STATE
+
+STATE 답변 2
+GOTO 답변 2
+< 다음 질문으로
+  > [질문 3]?
+  > ...

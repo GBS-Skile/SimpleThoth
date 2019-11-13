@@ -203,8 +203,8 @@ GOTO answer11
 STATE
 
 
-STATE answer12
-GOTO answer12
+STATE
+GOTOSELF
 < 다음 질문으로
   > 왜 그렇게 변했을까요?
   > {Dialog_activity} 활동이 이러한 변화에 어떠한 영향을 미쳤나요?
@@ -213,8 +213,8 @@ GOTO answer12
 STATE
 
 
-STATE answer13
-GOTO answer13
+STATE
+GOTOSELF
 < 다음 질문으로
 SET platform_tree_growthProgress 3
   > {Dialog_activity} 활동을 계속해서 하게되면

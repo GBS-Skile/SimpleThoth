@@ -1,1 +1,5 @@
 .vscode
+.DS_Store
+scripts/**
+scenarios/**
+docker-compose.yml

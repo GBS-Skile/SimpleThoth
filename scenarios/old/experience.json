@@ -806,7 +806,7 @@
     "state": "27",
     "context": {
       "Dialog": {
-        "state": "answer12"
+        "state": "28"
       }
     },
     "platform": {
@@ -816,10 +816,10 @@
     }
   },
   {
-    "state": "answer12",
+    "state": "28",
     "context": {
       "Dialog": {
-        "state": "answer12"
+        "state": "28"
       }
     },
     "branch": [
