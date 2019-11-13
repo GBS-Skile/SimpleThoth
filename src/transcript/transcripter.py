@@ -52,6 +52,8 @@ def _set_attribute(obj, path, value, *,
 
 
 class Transcripter:
+    COMMENT_INDICATOR = '#'
+
     def __init__(self):
         self._commands = {}
         self.state_manager = StateManager()
@@ -73,6 +75,9 @@ class Transcripter:
             return __wrapper
     
     def command(self, name, *args, **kwargs):
+        if name.startswith(self.COMMENT_INDICATOR):
+            raise KeyError(f'The name of command should not start with `{self.COMMENT_INDICATOR}`.')
+
         if name in self._commands.keys():
             raise KeyError(f'Command {name} should be unique.')
 
@@ -91,6 +96,9 @@ class Transcripter:
         for line in fp:
             tokens = line.strip().split()
             if len(tokens) == 0:
+                continue
+
+            if tokens[0].startswith(self.COMMENT_INDICATOR):
                 continue
             
             self.invoke_command(tokens[0], tokens[1:])
@@ -121,10 +129,6 @@ class Transcripter:
 
 
 transcripter = Transcripter()
-
-@transcripter.command('#', require_state=False)
-def cmd_comment(tr, *args):
-    pass
 
 
 @transcripter.command('IF')
@@ -188,6 +192,12 @@ def cmd_add_message(tr, *args):
 def cmd_add_next_state(tr, state_name):
     # TODO State name verification
     tr.set_field('context.Dialog.state', state_name)
+
+
+@transcripter.command('GOTOSELF')
+def cmd_add_next_state(tr):
+    # TODO State name verification
+    tr.set_field('context.Dialog.state', tr.state['state'])
 
 
 @transcripter.command('SET')
