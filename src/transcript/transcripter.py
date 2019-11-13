@@ -203,10 +203,10 @@ def cmd_add_next_state(tr):
 @transcripter.command('SET')
 def cmd_set_context(tr, path, *args):
     value = ast.literal_eval(' '.join(args))
-    _set_attribute(tr.state, path, value, sep='_')
+    tr.set_field(path, value, sep='_')
 
 
 @transcripter.command('APPEND')
 def cmd_set_context(tr, path, *args):
     value = ast.literal_eval(' '.join(args))
-    _set_attribute(tr.state, path, value, sep='_', append=True)
+    tr.set_field(path, value, sep='_', append=True)
