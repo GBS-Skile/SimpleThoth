@@ -86,6 +86,6 @@ class Scenario:
                 format_message(m)
                 for m in current_node.get('message', [])
             ],
-            'platform': current_node.get('platform'),
+            'platform': map_all_value(current_node.get('platform', {}), format_message),
             'context': map_all_value(current_node.get('context', {}), format_message),
         }
