@@ -1,0 +1,15 @@
+README.md
+simplethoth.egg-info/PKG-INFO
+simplethoth.egg-info/SOURCES.txt
+simplethoth.egg-info/dependency_links.txt
+simplethoth.egg-info/requires.txt
+simplethoth.egg-info/top_level.txt
+src/__init__.py
+src/scenario.py
+src/setup.py
+src/app/__init__.py
+src/transcript/__init__.py
+src/transcript/__main__.py
+src/transcript/errors.py
+src/transcript/states.py
+src/transcript/transcripter.py
