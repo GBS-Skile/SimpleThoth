@@ -75,7 +75,7 @@ class Scenario:
         state_node = self.state_nodes.get(state, self.fallback_state)
 
         current_node = state_node
-        format_message = lambda m: req_context.format_message(m, msg=message)
+        format_message = lambda m: (req_context.format_message(m, msg=message) if isinstance(m, str) else m)
 
         for branch in state_node.get('branch', []):
             if req_context.check(branch.get('condition', {}), msg=message):
