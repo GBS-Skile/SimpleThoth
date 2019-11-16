@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='simplethoth',
-    version='0.1.4',
+    version='0.1.5',
     author='Jeongmin Lee (Skile)',
     author_email='imleejm@gmail.com',
     packages=find_packages(),

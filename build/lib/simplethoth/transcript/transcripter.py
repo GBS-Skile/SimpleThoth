@@ -56,7 +56,6 @@ class Transcripter:
 
     def __init__(self):
         self._commands = {}
-        self.state_manager = StateManager()
     
     class Command:
         def __init__(self, transcripter, name, *, require_state=True):
@@ -90,6 +89,7 @@ class Transcripter:
         raise ParseError(f'Command {command} does not exist.')
     
     def transcript(self, fp):
+        self.state_manager = StateManager()
         self.scenario = []
         self.state = None
 
